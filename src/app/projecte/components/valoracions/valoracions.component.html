@@ -1,0 +1,9 @@
+<h1>Valoracions</h1>
+<form [formGroup]="this.valoracionsForm">
+  <select [(ngModel)]="selectedOption">
+    <option *ngFor="let criteri of criteris">{{criteri.titol}}</option>
+  </select>
+  <p>Descripció: <input type="text" formControlName="descripcio"></p>
+  <p>Valor: <input type="number" formControlName="valor"></p>
+  <button [disabled]="!this.valoracionsForm.valid" (click)="afegirValoracio()">Envia</button>
+</form>

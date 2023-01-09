@@ -1,0 +1,7 @@
+<h1>Criteris</h1>
+
+<form [formGroup]="this.criterisForm" (ngSubmit)="afegirCriteri()">
+  <label>Nom del criteri: </label>
+  <input type="text" formControlName="titol">
+  <button [disabled]="!this.criterisForm.valid">Crear</button>
+</form>
