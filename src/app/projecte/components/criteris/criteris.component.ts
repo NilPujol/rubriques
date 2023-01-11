@@ -10,7 +10,6 @@ import { ValoracionsComponent } from '../valoracions/valoracions.component';
 })
 export class CriterisComponent implements OnInit {
   criterisForm!: FormGroup;
-  criteris: Array<Criteri> = []
   constructor(private fb: FormBuilder) {
   }
 
@@ -27,13 +26,17 @@ export class CriterisComponent implements OnInit {
   }
   afegirCriteri() {
     let criterisActuals = localStorage.getItem('criteris');
+    let criterisfinals = [];
     if (criterisActuals != null) {
-      this.criteris = JSON.parse(criterisActuals);
-      this.criteris.push(new Criteri(this.criterisForm.get("titol")?.value, []));
+      criterisfinals = JSON.parse(criterisActuals);
+      if (criterisActuals.includes(this.criterisForm.get("titol")?.value)) { return; }
+      criterisfinals.push(this.criterisForm.get("titol")?.value);
+      localStorage.setItem('criteris', JSON.stringify(criterisfinals));
+      localStorage.setItem(this.criterisForm.get("titol")?.value, JSON.stringify([]));
     } else {
-      this.criteris.push(new Criteri(this.criterisForm.get("titol")?.value, []));
+      localStorage.setItem('criteris', JSON.stringify([this.criterisForm.get("titol")?.value]));
+      localStorage.setItem(this.criterisForm.get("titol")?.value, JSON.stringify([]));
     }
-    localStorage.setItem('criteris', JSON.stringify(this.criteris));
-  }
 
+  }
 }

@@ -9,8 +9,11 @@
   <tbody>
     <tr *ngFor="let criteri of criteris; let i = index">
       <td>{{criteri}}</td>
-      <td *ngFor="let valoracio of taula[i-1]; let j = index">
-        <label *ngIf="valoracio.valor == valorsCapcalera[j-1]">{{valoracio.descripcio}}</label>
+      <td *ngFor="let num of valorsCapcalera; let y = index">
+        <div *ngFor="let valoracio of taula[i]">
+          <label *ngIf="valoracio.valor == num"
+            (click)="guardarSeleccionats(criteri, num)">{{valoracio.descripcio}}</label>
+        </div>
       </td>
     </tr>
   </tbody>

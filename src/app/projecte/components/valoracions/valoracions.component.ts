@@ -10,8 +10,8 @@ import { Criteri } from '../../model/entitats/implementacions/Criteri';
 export class ValoracionsComponent implements OnInit {
   valoracionsForm!: FormGroup;
   criterisLocalStorage!: string | null;
-  criteris: Array<Criteri> = [];
-  selectedOption?: string;
+  criteris: Array<Number> = [];
+  selectedOption: string = "";
   constructor(private fb: FormBuilder) {
   }
 
@@ -36,14 +36,23 @@ export class ValoracionsComponent implements OnInit {
         }
       ],
     })
-    this.selectedOption = this.criteris[0].titol;
+    this.selectedOption = this.criteris[0].toString();
   }
   afegirValoracio(): void {
-    for (var i = 0; i < this.criteris.length; i++) {
-      if (this.criteris[i].titol == this.selectedOption) {
-        this.criteris[i].valoracions.push(this.valoracionsForm.get("descripcio")?.value, this.valoracionsForm.get("valor")?.value);
+    let criteri = localStorage.getItem(this.selectedOption);
+    let valoracions = [];
+    let existent = false;
+    if (criteri != null) {
+      valoracions = JSON.parse(criteri);
+      valoracions.forEach((valoracio: any[]) => {
+        if (valoracio[1] == this.valoracionsForm.get("valor")?.value) {
+          existent = true;
+        }
+      });
+      if (!existent) {
+        valoracions.push([this.valoracionsForm.get("descripcio")?.value, this.valoracionsForm.get("valor")?.value]);
+        localStorage.setItem(this.selectedOption, JSON.stringify(valoracions));
       }
     }
-    localStorage.setItem('criteris', JSON.stringify(this.criteris));
   }
 }
