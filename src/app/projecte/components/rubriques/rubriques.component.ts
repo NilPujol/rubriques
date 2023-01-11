@@ -10,6 +10,7 @@ export class RubriquesComponent implements OnInit {
   valorsCapcalera: Array<number> = [];
   taula = new Array<Array<Valoracio>>;
   criteris = new Array<string>;
+  mitjana = 0;
   constructor() { }
 
   ngOnInit(): void {
@@ -24,25 +25,38 @@ export class RubriquesComponent implements OnInit {
             return a[1] - b[1];
           });
           let fila = new Array<Valoracio>;
-          criterisLocalStorage.forEach((ValoracioLS: any[]) => {
-            let ValoracioTMP = new Valoracio(ValoracioLS[0], ValoracioLS[1]);
-            if (!this.valorsCapcalera.includes(ValoracioLS[1])) {
-              this.valorsCapcalera.push(ValoracioLS[1]);
+          criterisLocalStorage.forEach((ValoracioLS: Valoracio) => {
+            if (!this.valorsCapcalera.includes(ValoracioLS['valor'])) {
+              this.valorsCapcalera.push(ValoracioLS['valor']);
             }
-            fila.push(ValoracioTMP);
+            fila.push(ValoracioLS);
           });
           this.taula.push(fila);
         }
       });
     }
-    this.mostrar();
-  }
-  mostrar() {
-    console.log(this.taula);
     this.valorsCapcalera.sort((a, b) => a - b);
-    console.log(this.valorsCapcalera);
+    this.calcularMitjana();
   }
   guardarSeleccionats(criteri: string, valor: number) {
-
+    this.taula[this.criteris.indexOf(criteri)].forEach(valoracio => {
+      valoracio.isSelected = valoracio.valor == valor;
+      localStorage.setItem(criteri, JSON.stringify(this.taula[this.criteris.indexOf(criteri)]));
+    });
+    this.calcularMitjana();
+  }
+  calcularMitjana() {
+    let suma = 0;
+    let numCriteris = 0;
+    this.taula.forEach(criteri => {
+      criteri.forEach(valoracio => {
+        if (valoracio.isSelected) {
+          suma += valoracio.valor;
+        }
+      });
+      numCriteris++;
+    });
+    if (numCriteris == 0) { numCriteris = 1 }
+    this.mitjana = suma / numCriteris;
   }
 }

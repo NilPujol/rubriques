@@ -11,10 +11,17 @@
       <td>{{criteri}}</td>
       <td *ngFor="let num of valorsCapcalera; let y = index">
         <div *ngFor="let valoracio of taula[i]">
-          <label *ngIf="valoracio.valor == num"
-            (click)="guardarSeleccionats(criteri, num)">{{valoracio.descripcio}}</label>
+          <label *ngIf="valoracio.valor == num" for={{valoracio.valor}}{{i}}
+            (click)="guardarSeleccionats(criteri, num)">
+            <input *ngIf="valoracio.isSelected" type="radio" name={{i}} id={{valoracio.valor}}{{i}} checked="checked">
+            <input *ngIf="!valoracio.isSelected" type="radio" name={{i}} id={{valoracio.valor}}{{i}}>
+            {{valoracio.descripcio}}
+          </label>
         </div>
       </td>
     </tr>
   </tbody>
 </table>
+<br>
+<h3>Mitjana</h3>
+<p>{{mitjana}}</p>

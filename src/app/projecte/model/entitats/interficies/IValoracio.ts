@@ -1,4 +1,5 @@
 export interface IValoracio {
-    descripcio: string;
-    valor: number;
+  descripcio: string;
+  valor: number;
+  isSelected: boolean;
 }

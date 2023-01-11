@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Criteri } from '../../model/entitats/implementacions/Criteri';
+import { Valoracio } from '../../model/entitats/implementacions/Valoracio';
 
 @Component({
   selector: 'app-valoracions',
@@ -44,13 +45,14 @@ export class ValoracionsComponent implements OnInit {
     let existent = false;
     if (criteri != null) {
       valoracions = JSON.parse(criteri);
-      valoracions.forEach((valoracio: any[]) => {
-        if (valoracio[1] == this.valoracionsForm.get("valor")?.value) {
+      valoracions.forEach((valoracio: Valoracio) => {
+        if (valoracio['valor'] == this.valoracionsForm.get("valor")?.value) {
           existent = true;
         }
       });
       if (!existent) {
-        valoracions.push([this.valoracionsForm.get("descripcio")?.value, this.valoracionsForm.get("valor")?.value]);
+        let valoracio = new Valoracio(this.valoracionsForm.get("descripcio")?.value, this.valoracionsForm.get("valor")?.value);
+        valoracions.push(valoracio);
         localStorage.setItem(this.selectedOption, JSON.stringify(valoracions));
       }
     }
